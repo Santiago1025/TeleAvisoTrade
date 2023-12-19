@@ -67,8 +67,8 @@ async def bucleEquidad(update: Update) -> None:
         equidad1 = account_information1['equity']
         equidad2 = account_information2['equity']
 
-        update.effective_message.reply_text(f'La equidad Pursuit es: {equidad1}')
-        update.effective_message.reply_text(f'La equidad Liberty es: {equidad2}')
+        #update.effective_message.reply_text(f'La equidad Pursuit es: {equidad1}')
+        #update.effective_message.reply_text(f'La equidad Liberty es: {equidad2}')
                   
         if (equidad1==0):
             update.effective_message.reply_text("Date prisa Goku! Pursuit está en 0")
@@ -89,7 +89,7 @@ def equidad(update: Update, context: CallbackContext) -> None:
         
 # Command Handlers
 def welcome(update: Update, context: CallbackContext) -> None:
-    welcome_message = "Sea Bienvenido Avisos ver 10.4"
+    welcome_message = "Sea Bienvenido Avisos ver 10.5"
     # sends messages to user
     update.effective_message.reply_text(welcome_message)
     return
