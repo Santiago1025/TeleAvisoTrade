@@ -11,7 +11,9 @@ from telegram.ext import CommandHandler, Filters, MessageHandler, Updater, Conve
 
 API_KEY = 'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJlMTAwYTQyNjdjNzM4NjRlMWE3OWMxNDNiZTVmMjdkMyIsInBlcm1pc3Npb25zIjpbXSwiYWNjZXNzUnVsZXMiOlt7ImlkIjoidHJhZGluZy1hY2NvdW50LW1hbmFnZW1lbnQtYXBpIiwibWV0aG9kcyI6WyJ0cmFkaW5nLWFjY291bnQtbWFuYWdlbWVudC1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciIsIndyaXRlciJdLCJyZXNvdXJjZXMiOlsiKjokVVNFUl9JRCQ6KiJdfSx7ImlkIjoibWV0YWFwaS1yZXN0LWFwaSIsIm1ldGhvZHMiOlsibWV0YWFwaS1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciIsIndyaXRlciJdLCJyZXNvdXJjZXMiOlsiKjokVVNFUl9JRCQ6KiJdfSx7ImlkIjoibWV0YWFwaS1ycGMtYXBpIiwibWV0aG9kcyI6WyJtZXRhYXBpLWFwaTp3czpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciIsIndyaXRlciJdLCJyZXNvdXJjZXMiOlsiKjokVVNFUl9JRCQ6KiJdfSx7ImlkIjoibWV0YWFwaS1yZWFsLXRpbWUtc3RyZWFtaW5nLWFwaSIsIm1ldGhvZHMiOlsibWV0YWFwaS1hcGk6d3M6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiLCJ3cml0ZXIiXSwicmVzb3VyY2VzIjpbIio6JFVTRVJfSUQkOioiXX0seyJpZCI6Im1ldGFzdGF0cy1hcGkiLCJtZXRob2RzIjpbIm1ldGFzdGF0cy1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciJdLCJyZXNvdXJjZXMiOlsiKjokVVNFUl9JRCQ6KiJdfSx7ImlkIjoicmlzay1tYW5hZ2VtZW50LWFwaSIsIm1ldGhvZHMiOlsicmlzay1tYW5hZ2VtZW50LWFwaTpyZXN0OnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyIqOiRVU0VSX0lEJDoqIl19LHsiaWQiOiJjb3B5ZmFjdG9yeS1hcGkiLCJtZXRob2RzIjpbImNvcHlmYWN0b3J5LWFwaTpyZXN0OnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyIqOiRVU0VSX0lEJDoqIl19LHsiaWQiOiJtdC1tYW5hZ2VyLWFwaSIsIm1ldGhvZHMiOlsibXQtbWFuYWdlci1hcGk6cmVzdDpkZWFsaW5nOio6KiIsIm10LW1hbmFnZXItYXBpOnJlc3Q6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiLCJ3cml0ZXIiXSwicmVzb3VyY2VzIjpbIio6JFVTRVJfSUQkOioiXX1dLCJ0b2tlbklkIjoiMjAyMTAyMTMiLCJpbXBlcnNvbmF0ZWQiOmZhbHNlLCJyZWFsVXNlcklkIjoiZTEwMGE0MjY3YzczODY0ZTFhNzljMTQzYmU1ZjI3ZDMiLCJpYXQiOjE3MDEzMjY0MjR9.GrNjT3nuTnS33nx4X8jwQ72Lt5k502fKxXNlXraOcQLcfrFrPCMlOc6BhjBvMhPVGvD7NVpDI2yUMOw8VtGCeUMmUaVHPmWmxX5-E4aBKFiPsRHPqD5ngCsFgYULEzucZmHIEik6FaQDmZ1odEIuQyBnmFWAmFYs4d05IhXLz-Lj1awnIsoTcVHxLVm_41q_b-P5ikT08COjbczwl9_3TN2HC09c8_lcY1iaZQbQ15GoO_SCm1xUDdq_E8mnHOuLBYoWO_cZid3JQCB6eKNKjXDNdGm9lvr7k13m4GkN-r8qQn0ER8LFipMRyRYxobl_atc5DP0jyJWHfVJST1Y2xd_bpc1jIGAhc7s6mUIMtgzUVyoru9BEo0FFVfiCo6di3vQQnfKGhOd3IDAnOxYMICOvdFj8zXI6ZcUq0etEBOPp7zAxRGS1nulYjt96TyXnYZ_w_QyAF7MYpOYngxzYgAV7-VZHEdvcC9JU6oElwCVPLb-sFKmGsdsZieIsuToTS0eNlwzqagVJNZ6ytZQaN9bzGVk7W4tQjHfExc83XB4Aqkw3D69-jrCcyw5upQwOzbUI26OxIjGe6uo_mHmmC84KK0e4YpXcxeeWsCrR8RTx0kIudp9M8LmtHJZS_Zkg-eOn0nXNdHRKRICjO1a4PFtyDQfMggvVBgGWuW6u7rw'
 
-ACCOUNT_ID = 'cb7af802-0701-4e36-b537-508520531b60'
+ACCOUNT_ID_PURSUIT = 'cb7af802-0701-4e36-b537-508520531b60'
+
+ACCOUNT_ID_LIBERTY = 'e5bd17f9-3938-4947-a16c-057ac99f9da9'
 
 # Telegram Credentials
 TOKEN = os.environ.get("TOKEN")
@@ -30,42 +32,49 @@ logger = logging.getLogger(__name__)
 async def bucleEquidad(update: Update) -> None:
     api = MetaApi(API_KEY)
     try:
-        account = await api.metatrader_account_api.get_account(ACCOUNT_ID)
-        initial_state = account.state
+        account1 = await api.metatrader_account_api.get_account(ACCOUNT_ID_PURSUIT)
+        account2 = await api.metatrader_account_api.get_account(ACCOUNT_ID_LIBERTY)
+        initial_state1 = account1.state
         deployed_states = ['DEPLOYING', 'DEPLOYED']
 
-        if initial_state not in deployed_states:
+        if initial_state1 not in deployed_states:
             # Desplegar la cuenta si aún no está desplegada
             logger.info('Deploying account')
-            await account.deploy()
+            await account1.deploy()
+            await account2.deploy()
 
             # Esperar hasta que la cuenta se haya desplegado y conectado al broker
             logger.info('Waiting for the account to be deployed and connected to broker...')
-            await account.wait_connected()
+            await account1.wait_connected()
+            await account2.wait_connected()
 
         # Conectar a la API de MetaApi
-        connection = account.get_rpc_connection()
-        await connection.connect()
+        connection1 = account1.get_rpc_connection()
+        connection2 = account2.get_rpc_connection()
+        await connection1.connect()
+        await connection2.connect()
         #update.effective_message.reply_text("Successfully conectao!🤔")
         
         
         # Esperar hasta que el estado del terminal se haya sincronizado con el estado local
         logger.info('Esperando que SDK se sincronice con el estado del terminal ...')
-        await connection.wait_synchronized()
+        await connection1.wait_synchronized()
+        await connection2.wait_synchronized()
 
         # Obtener información de la cuenta desde el servidor de MetaTrader
-        account_information = await connection.get_account_information()
-        equidad = account_information['equity']
+        account_information1 = await connection1.get_account_information()
+        account_information2 = await connection2.get_account_information()
+        equidad1 = account_information1['equity']
+        equidad2 = account_information2['equity']
 
-        update.effective_message.reply_text(f'La equidad es: {equidad}')
+        update.effective_message.reply_text(f'La equidad Pursuit es: {equidad1}')
+        update.effective_message.reply_text(f'La equidad Liberty es: {equidad2}')
+                  
+        if (equidad1==0):
+            update.effective_message.reply_text("Date prisa Goku! Pursuit está en 0")
             
-            
-        if (equidad>=1500):
-            update.effective_message.reply_text("Date prisa Goku! El balance es >1500")
-                
-        if (equidad<=10):
-            update.effective_message.reply_text("Faliure")
-        # Esperar un minuto antes de realizar la próxima actualización
+        if (equidad2==0):
+            update.effective_message.reply_text("Date prisa Goku! Liberty está en 0")
         return
     
     except Exception as error:
@@ -80,7 +89,7 @@ def equidad(update: Update, context: CallbackContext) -> None:
         
 # Command Handlers
 def welcome(update: Update, context: CallbackContext) -> None:
-    welcome_message = "Sea Bienvenido ver 10.3"
+    welcome_message = "Sea Bienvenido Avisos ver 10.4"
     # sends messages to user
     update.effective_message.reply_text(welcome_message)
     return
