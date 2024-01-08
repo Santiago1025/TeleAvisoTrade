@@ -70,11 +70,11 @@ async def bucleEquidad(update: Update) -> None:
         #update.effective_message.reply_text(f'La equidad Pursuit es: {equidad1}')
         #update.effective_message.reply_text(f'La equidad Liberty es: {equidad2}')
                   
-        if (equidad1==0):
-            update.effective_message.reply_text("Date prisa Goku! Pursuit está en 0")
+        if (equidad1>=2500):
+            update.effective_message.reply_text("Date prisa Goku! Pursuit está en 2500")
             
-        if (equidad2==0):
-            update.effective_message.reply_text("Date prisa Goku! Liberty está en 0")
+        if (equidad2>=2500):
+            update.effective_message.reply_text("Date prisa Goku! Liberty está en 2500")
         return
     
     except Exception as error:
@@ -89,7 +89,7 @@ def equidad(update: Update, context: CallbackContext) -> None:
         
 # Command Handlers
 def welcome(update: Update, context: CallbackContext) -> None:
-    welcome_message = "Sea Bienvenido Avisos ver 10.5"
+    welcome_message = "Sea Bienvenido Avisos ver 10.6"
     # sends messages to user
     update.effective_message.reply_text(welcome_message)
     return
