@@ -72,9 +72,11 @@ async def bucleEquidad(update: Update) -> None:
                   
         if (equidad1>=2500):
             update.effective_message.reply_text("Date prisa Goku! Pursuit está en 2500")
+            asyncio.run(CloseAllPursuit(update))
             
         if (equidad2>=2500):
             update.effective_message.reply_text("Date prisa Goku! Liberty está en 2500")
+            asyncio.run(CloseAllLiberty(update))
         return
     
     except Exception as error:
@@ -89,7 +91,7 @@ def equidad(update: Update, context: CallbackContext) -> None:
         
 # Command Handlers
 def welcome(update: Update, context: CallbackContext) -> None:
-    welcome_message = "Sea Bienvenido Avisos ver 10.6"
+    welcome_message = "Sea Bienvenido Avisos ver 10.7"
     # sends messages to user
     update.effective_message.reply_text(welcome_message)
     return
@@ -101,6 +103,86 @@ def error(update: Update, context: CallbackContext) -> None:
 def terminar(update: Update, context: CallbackContext) -> None:
     update.effective_message.reply_text("Terminando operaciones")
     return ConversationHandler.END
+
+async def CloseAllLiberty(update: Update):
+    api = MetaApi(API_KEY)
+    
+    try:
+        account = await api.metatrader_account_api.get_account(ACCOUNT_ID_LIBERTY)
+        initial_state = account.state
+        deployed_states = ['DEPLOYING', 'DEPLOYED']
+
+        if initial_state not in deployed_states:
+            #  wait until account is deployed and connected to broker
+            logger.info('Deploying account')
+            await account.deploy()
+
+        logger.info('Waiting for API server to connect to broker ...')
+        await account.wait_connected()
+
+        # connect to MetaApi API
+        connection = account.get_rpc_connection()
+        await connection.connect()
+
+        # wait until terminal state synchronized to the local state
+        logger.info('Waiting for SDK to synchronize to terminal state ...')
+        await connection.wait_synchronized()
+
+        # Obtiene las posiciones abiertas
+        positions = await connection.get_positions()
+
+        # Cierra todas las posiciones abiertas
+        for position in positions:
+            await connection.close_position(position['id'])
+
+        update.effective_message.reply_text("Todas las posiciones Liberty se han cerrado con éxito.")
+
+    
+    except Exception as error:
+        logger.error(f'Error: {error}')
+        update.effective_message.reply_text(f"Error al cerrar las posiciones: There was an issue with the connection 😕\n\nError Message:\n{error}")
+    
+    return
+
+async def CloseAllPursuit(update: Update):
+    api = MetaApi(API_KEY)
+    
+    try:
+        account = await api.metatrader_account_api.get_account(ACCOUNT_ID_PURSUIT)
+        initial_state = account.state
+        deployed_states = ['DEPLOYING', 'DEPLOYED']
+
+        if initial_state not in deployed_states:
+            #  wait until account is deployed and connected to broker
+            logger.info('Deploying account')
+            await account.deploy()
+
+        logger.info('Waiting for API server to connect to broker ...')
+        await account.wait_connected()
+
+        # connect to MetaApi API
+        connection = account.get_rpc_connection()
+        await connection.connect()
+
+        # wait until terminal state synchronized to the local state
+        logger.info('Waiting for SDK to synchronize to terminal state ...')
+        await connection.wait_synchronized()
+
+        # Obtiene las posiciones abiertas
+        positions = await connection.get_positions()
+
+        # Cierra todas las posiciones abiertas
+        for position in positions:
+            await connection.close_position(position['id'])
+
+        update.effective_message.reply_text("Todas las posiciones Pursuit se han cerrado con éxito.")
+
+    
+    except Exception as error:
+        logger.error(f'Error: {error}')
+        update.effective_message.reply_text(f"Error al cerrar las posiciones: There was an issue with the connection 😕\n\nError Message:\n{error}")
+    
+    return
 
 def main() -> None:
     """Runs the Telegram bot."""
