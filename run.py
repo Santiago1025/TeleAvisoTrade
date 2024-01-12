@@ -72,11 +72,11 @@ async def bucleEquidad(update: Update) -> None:
                   
         if (equidad1>=1500):
             update.effective_message.reply_text("Date prisa Goku! Pursuit está en 1500")
-            asyncio.create_task(CloseAllPursuit(update))
+            ClosePursuit(update)
             
         if (equidad2>=1500):
             update.effective_message.reply_text("Date prisa Goku! Liberty está en 1500")
-            asyncio.create_task(CloseAllLiberty(update))
+            CloseLiberty(update)
         return
     
     except Exception as error:
@@ -87,6 +87,14 @@ async def bucleEquidad(update: Update) -> None:
 def equidad(update: Update, context: CallbackContext) -> None:
     #update.effective_message.reply_text("Hora de Mórfosis")
     asyncio.run(bucleEquidad(update))
+    return
+
+def ClosePursuit(update: Update):
+    asyncio.run(CloseAllPursuit(update))
+    return
+
+def CloseLiberty(update: Update):
+    asyncio.run(CloseAllLiberty(update))
     return
         
 # Command Handlers
