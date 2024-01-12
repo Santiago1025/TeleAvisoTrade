@@ -67,16 +67,16 @@ async def bucleEquidad(update: Update) -> None:
         equidad1 = account_information1['equity']
         equidad2 = account_information2['equity']
 
-        #update.effective_message.reply_text(f'La equidad Pursuit es: {equidad1}')
+        #update.effective_message.reply_text(f'La equidconad Pursuit es: {equidad1}')
         #update.effective_message.reply_text(f'La equidad Liberty es: {equidad2}')
                   
-        if (equidad1>=2500):
-            update.effective_message.reply_text("Date prisa Goku! Pursuit está en 2500")
-            asyncio.run(CloseAllPursuit(update))
+        if (equidad1>=1500):
+            update.effective_message.reply_text("Date prisa Goku! Pursuit está en 1500")
+            asyncio.create_task(CloseAllPursuit(update))
             
-        if (equidad2>=2500):
-            update.effective_message.reply_text("Date prisa Goku! Liberty está en 2500")
-            asyncio.run(CloseAllLiberty(update))
+        if (equidad2>=1500):
+            update.effective_message.reply_text("Date prisa Goku! Liberty está en 1500")
+            asyncio.create_task(CloseAllLiberty(update))
         return
     
     except Exception as error:
@@ -91,7 +91,7 @@ def equidad(update: Update, context: CallbackContext) -> None:
         
 # Command Handlers
 def welcome(update: Update, context: CallbackContext) -> None:
-    welcome_message = "Sea Bienvenido Avisos ver 10.7"
+    welcome_message = "Sea Bienvenido Avisos ver 10.8"
     # sends messages to user
     update.effective_message.reply_text(welcome_message)
     return
